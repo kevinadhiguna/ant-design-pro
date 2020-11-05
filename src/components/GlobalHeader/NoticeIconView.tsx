@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect, ConnectProps } from 'umi';
+import { connect, ConnectProps, useIntl } from 'umi';
 import { Tag, message } from 'antd';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
@@ -42,7 +42,12 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
   handleNoticeClear = (title: string, key: string) => {
     const { dispatch } = this.props;
-    message.success(`${'清空了'} ${title}`);
+    message.success(
+      `${useIntl().formatMessage({
+        id: 'component.globalHeader.noticeIconView.noticeClearSuccess',
+        defaultMessage: '清空了',
+      })} ${title}`,
+    );
 
     if (dispatch) {
       dispatch({
@@ -126,8 +131,14 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           this.changeReadState(item as NoticeItem);
         }}
         loading={fetchingNotices}
-        clearText="清空"
-        viewMoreText="查看更多"
+        clearText={useIntl().formatMessage({
+          id: 'component.globalHeader.noticeIconView.clearText',
+          defaultMessage: '清空',
+        })}
+        viewMoreText={useIntl().formatMessage({
+          id: 'component.globalHeader.noticeIconView.seeMore',
+          defaultMessage: '查看更多',
+        })}
         onClear={this.handleNoticeClear}
         onPopupVisibleChange={onNoticeVisibleChange}
         onViewMore={() => message.info('Click on view more')}
@@ -137,22 +148,40 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           tabKey="notification"
           count={unreadMsg.notification}
           list={noticeData.notification}
-          title="通知"
-          emptyText="你已查看所有通知"
+          title={useIntl().formatMessage({
+            id: 'component.globalHeader.noticeIconView.notificationTitle',
+            defaultMessage: '通知',
+          })}
+          emptyText={useIntl().formatMessage({
+            id: 'component.globalHeader.noticeIconView.notificationEmptyText',
+            defaultMessage: '你已查看所有通知',
+          })}
           showViewMore
         />
         <NoticeIcon.Tab
           tabKey="message"
           count={unreadMsg.message}
           list={noticeData.message}
-          title="消息"
-          emptyText="您已读完所有消息"
+          title={useIntl().formatMessage({
+            id: 'component.globalHeader.noticeIconView.messageTitle',
+            defaultMessage: '消息',
+          })}
+          emptyText={useIntl().formatMessage({
+            id: 'component.globalHeader.noticeIconView.messageEmptyText',
+            defaultMessage: '您已读完所有消息',
+          })}
           showViewMore
         />
         <NoticeIcon.Tab
           tabKey="event"
-          title="待办"
-          emptyText="你已完成所有待办"
+          title={useIntl().formatMessage({
+            id: 'component.globalHeader.noticeIconView.eventTitle',
+            defaultMessage: '待办',
+          })}
+          emptyText={useIntl().formatMessage({
+            id: 'component.globalHeader.noticeIconView.eventEmptyText',
+            defaultMessage: '你已完成所有待办',
+          })}
           count={unreadMsg.event}
           list={noticeData.event}
           showViewMore

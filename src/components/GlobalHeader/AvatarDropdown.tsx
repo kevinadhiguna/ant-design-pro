@@ -1,7 +1,7 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
-import { history, ConnectProps, connect } from 'umi';
+import { history, ConnectProps, connect, FormattedMessage } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
@@ -49,20 +49,29 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         {menu && (
           <Menu.Item key="center">
             <UserOutlined />
-            个人中心
+            <FormattedMessage
+              id="component.globalHeader.avatarDropdown.personalCenter"
+              defaultMessage="个人中心"
+            />
           </Menu.Item>
         )}
         {menu && (
           <Menu.Item key="settings">
             <SettingOutlined />
-            个人设置
+            <FormattedMessage
+              id="component.globalHeader.avatarDropdown.personalSettings"
+              defaultMessage="个人设置"
+            />
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
 
         <Menu.Item key="logout">
           <LogoutOutlined />
-          退出登录
+          <FormattedMessage
+            id="component.globalHeader.avatarDropdown.logout"
+            defaultMessage="退出登录"
+          />
         </Menu.Item>
       </Menu>
     );
