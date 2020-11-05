@@ -42,8 +42,9 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
 
   handleNoticeClear = (title: string, key: string) => {
     const { dispatch } = this.props;
+    const intl = useIntl();
     message.success(
-      `${useIntl().formatMessage({
+      `${intl.formatMessage({
         id: 'component.globalHeader.noticeIconView.noticeClearSuccess',
         defaultMessage: '清空了',
       })} ${title}`,
@@ -123,6 +124,7 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
     const { currentUser, fetchingNotices, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
+    const intl = useIntl();
     return (
       <NoticeIcon
         className={styles.action}
@@ -131,11 +133,11 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           this.changeReadState(item as NoticeItem);
         }}
         loading={fetchingNotices}
-        clearText={useIntl().formatMessage({
+        clearText={intl.formatMessage({
           id: 'component.globalHeader.noticeIconView.clearText',
           defaultMessage: '清空',
         })}
-        viewMoreText={useIntl().formatMessage({
+        viewMoreText={intl.formatMessage({
           id: 'component.globalHeader.noticeIconView.seeMore',
           defaultMessage: '查看更多',
         })}
@@ -148,11 +150,11 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           tabKey="notification"
           count={unreadMsg.notification}
           list={noticeData.notification}
-          title={useIntl().formatMessage({
+          title={intl.formatMessage({
             id: 'component.globalHeader.noticeIconView.notificationTitle',
             defaultMessage: '通知',
           })}
-          emptyText={useIntl().formatMessage({
+          emptyText={intl.formatMessage({
             id: 'component.globalHeader.noticeIconView.notificationEmptyText',
             defaultMessage: '你已查看所有通知',
           })}
@@ -162,11 +164,11 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
           tabKey="message"
           count={unreadMsg.message}
           list={noticeData.message}
-          title={useIntl().formatMessage({
+          title={intl.formatMessage({
             id: 'component.globalHeader.noticeIconView.messageTitle',
             defaultMessage: '消息',
           })}
-          emptyText={useIntl().formatMessage({
+          emptyText={intl.formatMessage({
             id: 'component.globalHeader.noticeIconView.messageEmptyText',
             defaultMessage: '您已读完所有消息',
           })}
@@ -174,11 +176,11 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
         />
         <NoticeIcon.Tab
           tabKey="event"
-          title={useIntl().formatMessage({
+          title={intl.formatMessage({
             id: 'component.globalHeader.noticeIconView.eventTitle',
             defaultMessage: '待办',
           })}
-          emptyText={useIntl().formatMessage({
+          emptyText={intl.formatMessage({
             id: 'component.globalHeader.noticeIconView.eventEmptyText',
             defaultMessage: '你已完成所有待办',
           })}
