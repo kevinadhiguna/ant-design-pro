@@ -6,6 +6,7 @@ import settingDrawer from './en-US/settingDrawer';
 import settings from './en-US/settings';
 import pages from './en-US/pages';
 import layouts from './en-US/layouts';
+import req from './en-US/req';
 
 export default {
   'navBar.lang': 'Languages',
@@ -23,4 +24,5 @@ export default {
   ...component,
   ...pages,
   ...layouts,
+  ...req,
 };
