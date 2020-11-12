@@ -1,6 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, message, Input, Drawer } from 'antd';
 import React, { useState, useRef } from 'react';
+import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions from '@ant-design/pro-descriptions';
@@ -14,15 +15,25 @@ import { queryRule, updateRule, addRule, removeRule } from './service';
  * @param fields
  */
 const handleAdd = async (fields: TableListItem) => {
-  const hide = message.loading('正在添加');
+  const intl = useIntl();
+  const hide = message.loading(
+    intl.formatMessage({ id: 'pages.searchTable.handleAdd.loading', defaultMessage: '正在添加' }),
+  );
   try {
     await addRule({ ...fields });
     hide();
-    message.success('添加成功');
+    message.success(
+      intl.formatMessage({ id: 'pages.searchTable.handleAdd.success', defaultMessage: '添加成功' }),
+    );
     return true;
   } catch (error) {
     hide();
-    message.error('添加失败请重试！');
+    message.error(
+      intl.formatMessage({
+        id: 'pages.searchTable.handleAdd.error',
+        defaultMessage: '添加失败请重试！',
+      }),
+    );
     return false;
   }
 };
@@ -32,7 +43,13 @@ const handleAdd = async (fields: TableListItem) => {
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
+  const intl = useIntl();
+  const hide = message.loading(
+    intl.formatMessage({
+      id: 'pages.searchTable.handleUpdate.loading',
+      defaultMessage: '正在配置',
+    }),
+  );
   try {
     await updateRule({
       name: fields.name,
@@ -41,11 +58,21 @@ const handleUpdate = async (fields: FormValueType) => {
     });
     hide();
 
-    message.success('配置成功');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.searchTable.handleUpdate.success',
+        defaultMessage: '配置成功',
+      }),
+    );
     return true;
   } catch (error) {
     hide();
-    message.error('配置失败请重试！');
+    message.error(
+      intl.formatMessage({
+        id: 'pages.searchTable.handleUpdate.error',
+        defaultMessage: '配置失败请重试！',
+      }),
+    );
     return false;
   }
 };
@@ -55,18 +82,34 @@ const handleUpdate = async (fields: FormValueType) => {
  * @param selectedRows
  */
 const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
+  const intl = useIntl();
+  const hide = message.loading(
+    intl.formatMessage({
+      id: 'pages.searchTable.handleRemove.loading',
+      defaultMessage: '正在删除',
+    }),
+  );
   if (!selectedRows) return true;
   try {
     await removeRule({
       key: selectedRows.map((row) => row.key),
     });
     hide();
-    message.success('删除成功，即将刷新');
+    message.success(
+      intl.formatMessage({
+        id: 'pages.searchTable.handleRemove.success',
+        defaultMessage: '删除成功，即将刷新',
+      }),
+    );
     return true;
   } catch (error) {
     hide();
-    message.error('删除失败，请重试');
+    message.error(
+      intl.formatMessage({
+        id: 'pages.searchTable.handleRemove.error',
+        defaultMessage: '删除失败，请重试',
+      }),
+    );
     return false;
   }
 };
@@ -78,16 +121,27 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const [row, setRow] = useState<TableListItem>();
   const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
+  const intl = useIntl();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '规则名称',
+      title: (
+        <FormattedMessage
+          id="pages.searchTable.tableListItem.nameTitle"
+          defaultMessage="规则名称"
+        />
+      ),
       dataIndex: 'name',
       tip: '规则名称是唯一的 key',
       formItemProps: {
         rules: [
           {
             required: true,
-            message: '规则名称为必填项',
+            message: (
+              <FormattedMessage
+                id="pages.searchTable.tableListItem.nameRule"
+                defaultMessage="规则名称为必填项"
+              />
+            ),
           },
         ],
       },
@@ -96,30 +150,76 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
-      title: '描述',
+      title: (
+        <FormattedMessage id="pages.searchTable.tableListItem.descTitle" defaultMessage="描述" />
+      ),
       dataIndex: 'desc',
       valueType: 'textarea',
     },
     {
-      title: '服务调用次数',
+      title: (
+        <FormattedMessage
+          id="pages.searchTable.tableListItem.callNoTitle"
+          defaultMessage="服务调用次数"
+        />
+      ),
       dataIndex: 'callNo',
       sorter: true,
       hideInForm: true,
       renderText: (val: string) => `${val} 万`,
     },
     {
-      title: '状态',
+      title: (
+        <FormattedMessage id="pages.searchTable.tableListItem.statusTitle" defaultMessage="状态" />
+      ),
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
-        0: { text: '关闭', status: 'Default' },
-        1: { text: '运行中', status: 'Processing' },
-        2: { text: '已上线', status: 'Success' },
-        3: { text: '异常', status: 'Error' },
+        0: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.tableListItem.statusShutDown"
+              defaultMessage="关闭"
+            />
+          ),
+          status: 'Default',
+        },
+        1: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.tableListItem.statusRunning"
+              defaultMessage="运行中"
+            />
+          ),
+          status: 'Processing',
+        },
+        2: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.tableListItem.statusOnline"
+              defaultMessage="已上线"
+            />
+          ),
+          status: 'Success',
+        },
+        3: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.tableListItem.statusAbnormal"
+              defaultMessage="异常"
+            />
+          ),
+          status: 'Error',
+        },
       },
     },
     {
-      title: '上次调度时间',
+      title: (
+        <FormattedMessage
+          id="pages.searchTable.tableListItem.updatedAtTitle"
+          defaultMessage="上次调度时间"
+        />
+      ),
       dataIndex: 'updatedAt',
       sorter: true,
       valueType: 'dateTime',
@@ -130,13 +230,23 @@ const TableList: React.FC<{}> = () => {
           return false;
         }
         if (`${status}` === '3') {
-          return <Input {...rest} placeholder="请输入异常原因！" />;
+          return (
+            <Input
+              {...rest}
+              placeholder={intl.formatMessage({
+                id: 'pages.searchTable.tableListItem.updatedAtStatus3',
+                defaultMessage: '请输入异常原因！',
+              })}
+            />
+          );
         }
         return defaultRender(item);
       },
     },
     {
-      title: '操作',
+      title: (
+        <FormattedMessage id="pages.searchTable.tableListItem.optionTitle" defaultMessage="操作" />
+      ),
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
@@ -147,10 +257,18 @@ const TableList: React.FC<{}> = () => {
               setStepFormValues(record);
             }}
           >
-            配置
+            <FormattedMessage
+              id="pages.searchTable.tableListItem.optionConfig"
+              defaultMessage="配置"
+            />
           </a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <a href="">
+            <FormattedMessage
+              id="pages.searchTable.tableListItem.optionSubscribeAlerts"
+              defaultMessage="订阅警报"
+            />
+          </a>
         </>
       ),
     },
